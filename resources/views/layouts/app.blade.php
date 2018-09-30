@@ -71,6 +71,11 @@
                 </div>
             </div>
         </nav>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                @yield('breadcrumb')
+            </ol>
+        </nav>
 
         <main class="py-4">
             @yield('content')

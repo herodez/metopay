@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{route('transactions')}}">Transactions</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Transaction: {{$transaction->transaction_id}}</li>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

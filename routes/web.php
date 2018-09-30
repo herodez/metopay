@@ -12,7 +12,8 @@
 */
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/home', 'TransactionController@index');
+Route::get('/home', 'TransactionController@index')
+    ->name('dashboard');
 Route::post('/createTransaction', 'TransactionController@store')
     ->name('createPseTransaction');
 Route::get('/transactions', 'TransactionController@getTransactions')
