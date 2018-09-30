@@ -9,6 +9,10 @@ use App\Soap\Data\Person;
 use App\Transaction;
 use Cache;
 
+use Artisaninweb\SoapWrapper\SoapWrapper;
+use App\Soap\Request\GetTransactionInformation;
+use App\Soap\Data\Authentication;
+
 
 class TransactionController extends Controller
 {   
@@ -104,6 +108,11 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return $transaction;
+        $response = getTransactionResult($transaction->transaction_id);
+        $transactionInformation = $response->getTransactionInformationResult();
+        $transaction->state = $transactionInformation->responseCode;
+        $transaction->save();
+
+        return view('transaction', compact('transaction'));
     }
 }

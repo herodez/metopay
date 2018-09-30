@@ -8,6 +8,8 @@ use App\Soap\Request\GetBankList as BankList;
 use App\Soap\Response\GetBankListResponse as BankResponse;
 use App\Soap\Request\CreateTransaction as Transaction;
 use App\Soap\Response\CreateTransactionResponse as TransactionResponse;
+use App\Soap\Request\GetTransactionInformation as TransactionInformation;
+use App\Soap\Response\GetTransactionInformationResponse as TransactionInformationResponse;
 use App\Soap\Data\Authentication;
 
 
@@ -16,6 +18,9 @@ class getBankListResponse extends BankResponse{};
 class getBankList extends BankList{};
 class createTransaction extends Transaction{};
 class createTransactionResponse extends TransactionResponse{};
+class getTransactionInformation extends TransactionInformation{};
+class getTransactionInformationResponse extends TransactionInformationResponse{};
+
 
 class PlaceToPayServiceProvider extends ServiceProvider
 {
@@ -54,8 +59,10 @@ class PlaceToPayServiceProvider extends ServiceProvider
                     ->classmap([
                         getBankList::class,
                         getBankListResponse::class,
+                        getTransactionInformation::class,
                         createTransaction::class,
-                        createTransactionResponse::class
+                        createTransactionResponse::class,
+                        getTransactionInformationResponse::class
                     ]);
             });
 
