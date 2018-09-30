@@ -13,8 +13,12 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'TransactionController@index');
-Route::get('/createTransaction', 'TransactionController@createTransaction');
-Route::get('/transactions', 'TransactionController@getTransactions');
+Route::post('/createTransaction', 'TransactionController@store')
+    ->name('createPseTransaction');
+Route::get('/transactions', 'TransactionController@getTransactions')
+    ->name('transactions');
 Route::get('/getBanksList', 'TransactionController@getBankList');
+Route::get('/transaction/{transaction}', 'TransactionController@show')
+    ->name('transaction_show');
 Auth::routes();
 

@@ -10505,3 +10505,12 @@ footer {
   color: white;
 }
 
+.card-body-notpadding {
+  padding: 0;
+}
+
+.thead-metopay {
+  background-color: dimgray;
+  color: white;
+}
+

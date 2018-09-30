@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Soap\Data\PSETransactionRequest;
-use App\Soap\Data\Authentication;
-use App\Soap\Request\CreateTransaction;
-use Artisaninweb\SoapWrapper\SoapWrapper;
+use App\Traits\PseTransactionStore;
+use App\Http\Requests\StorePseTransaction;
 use App\Soap\Data\Person;
 use App\Transaction;
 use Cache;
@@ -14,6 +12,8 @@ use Cache;
 
 class TransactionController extends Controller
 {   
+    use PseTransactionStore; 
+
     /**
      * Create a new controller instance.
      *
@@ -31,7 +31,10 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //Get banks list from cache
+        $banks =  Cache::get('placetopay_banklist', array());
+
+        return view('home', compact('banks'));
     }
 
     /**
@@ -40,7 +43,7 @@ class TransactionController extends Controller
      * @param Request $request
      * @return Redirect
      */
-    public function createTransaction(Request $request)
+    public function store(StorePseTransaction $request)
     {
         $payer = new Person(); 
         $payer->document = '788999033';
@@ -48,42 +51,36 @@ class TransactionController extends Controller
         $payer->firstName = 'Mario';
         $payer->lastName = 'Gonzalez';
         $payer->emailAddress = "mario@gmail.com";
+        
+        $buyer = new Person(); 
+        $buyer->document = '788999033';
+        $buyer->documentType = 'CC';
+        $buyer->firstName = 'Mario';
+        $buyer->lastName = 'Gonzalez';
+        $buyer->emailAddress = "mario@gmail.com";
 
-        $trans = new PSETransactionRequest(
-            array(
-            'bankCode' => '1022',
-            'bankInterface' => 0,
-            'returnURL' => 'http://metopay.test/',
-            'reference' => 'mario-122',
-            'description' => 'Pago test',
-            'language' => 'ES',
-            'currency' => 'COP',
-            'totalAmount' => 100.00,
-            'payer' => $payer->toArray(),
-            'buyer' => 'metopay.com',
-            'shipping' => 'metopay.com',
-            'ipAddress' => '192.168.0.1',
-            'userAgent' => 'Google Chorme'
-            )
+        $shipping = new Person(); 
+        $shipping->document = '788999033';
+        $shipping->documentType = 'CC';
+        $shipping->firstName = 'Mario';
+        $shipping->lastName = 'Gonzalez';
+        $shipping->emailAddress = "mario@gmail.com";
+
+        $data = array(
+            'bank' => $request->bank,
+            'client' => $request->client,
+            'amount' => $request->amount,
+            'buyer' => $buyer,
+            'payer' => $payer,
+            'shipping' => $shipping,
+            'ip' => $request->ip(),
+            'agent' => $request->header('User-Agent')
         );
 
-        $soap = resolve(SoapWrapper::class);
+        $successUrl = $this->createTransaction($data);
 
-        $response = $soap->call('placeToPay.createTransaction', array(
-            new CreateTransaction(resolve(Authentication::class), $trans)
-        ));
-
-        $transResult = $response->getTransactionResult();
-        $newTransaction = new Transaction();
-        $newTransaction->transaction_id = $transResult->transactionID;
-        $newTransaction->session_id = $transResult->sessionID;
-        $newTransaction->authorization = $transResult->trazabilityCode;
-        $newTransaction->state = $transResult->responseCode;
-        $newTransaction->save();
-
-
-        if($transResult->returnCode == 'SUCCESS'){
-            return redirect($transResult->bankURL);
+        if(!empty($successUrl)){
+            return redirect($successUrl);
         }
     }
 
@@ -94,16 +91,19 @@ class TransactionController extends Controller
      */
     public function getTransactions(Request $request)
     {
-        return Transaction::orderBy('id', 'desc')->paginate(10);
+        $transactions = Transaction::orderBy('id', 'desc')->paginate(5);
+
+        return view('transactions', compact('transactions'));
     }
 
     /**
-     * Return the bank list from cache
+     * Return a transaction
      *
-     * @return array App\Soap\Data\Bank
+     * @param Transaction $transaction
+     * @return Transaction
      */
-    public function getBankList()
+    public function show(Transaction $transaction)
     {
-        return Cache::get('placetopay_banklist', array());
+        return $transaction;
     }
 }

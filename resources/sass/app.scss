@@ -38,11 +38,19 @@ footer {
 }
 
 .card {
-
   border-top-color: $green;
 }
 
 .card-header {
   background-color: $green;
+  color:white;
+}
+
+.card-body-notpadding {
+  padding:0;
+}
+
+.thead-metopay {
+  background-color: dimgray;
   color:white;
 }
