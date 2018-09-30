@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+   | Transaction: {{$transaction->transaction_id}}
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{route('transactions')}}">Transactions</a></li>

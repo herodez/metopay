@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '| Transactions')
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
     <li class="breadcrumb-item active" aria-current="page">Transactions</li>

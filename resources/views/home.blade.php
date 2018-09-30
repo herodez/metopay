@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '| Dashboard')
+
 @section('breadcrumb')
     <li class="breadcrumb-item active" aria-current="page">Home</li>
 @endsection
