@@ -6,11 +6,16 @@ use Illuminate\Support\ServiceProvider;
 use Artisaninweb\SoapWrapper\SoapWrapper;
 use App\Soap\Request\GetBankList as BankList;
 use App\Soap\Response\GetBankListResponse as BankResponse;
+use App\Soap\Request\CreateTransaction as Transaction;
+use App\Soap\Response\CreateTransactionResponse as TransactionResponse;
 use App\Soap\Data\Authentication;
+
 
 // To define classmap
 class getBankListResponse extends BankResponse{};
 class getBankList extends BankList{};
+class createTransaction extends Transaction{};
+class createTransactionResponse extends TransactionResponse{};
 
 class PlaceToPayServiceProvider extends ServiceProvider
 {
@@ -49,6 +54,8 @@ class PlaceToPayServiceProvider extends ServiceProvider
                     ->classmap([
                         getBankList::class,
                         getBankListResponse::class,
+                        createTransaction::class,
+                        createTransactionResponse::class
                     ]);
             });
 

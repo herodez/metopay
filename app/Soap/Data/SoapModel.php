@@ -2,53 +2,17 @@
 
 namespace App\Soap\Data;
 
-use JsonSerializable;
+use Illuminate\Database\Eloquent\Collection;
 
-class SoapModel implements JsonSerializable
+class SoapModel extends Collection
 {
-    /**
-     * Stored the value for all properties
-     *
-     * @var array
-     */
-    protected $values;
-    
-    /**
-     * SoapModel construct
-     *
-     * @param array $values
-     */
-    public function __construct($values)
-    {
-        $this->values = $values;
-    }
-
     public function __get($key)
     {
-        return $this->values[$key];
+        return $this->items[$key];
     }
 
     public function __set($key, $value)
     {
-        $this->values[$key] = $value;
-    }
-
-    /**
-     * Get the data of class as array
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->values;
-    }
-
-    /**
-     * Serialize properties class to json
-     *
-     * @return string
-     */
-    public function jsonSerialize() {
-        return $this->values;
+        $this->items[$key] = $value;
     }
 }

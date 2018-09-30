@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-  return Cache::get('placetopay_banklist');
-});
+Route::get('/', 'TransactionController@index');
+Route::get('/createTransaction', 'TransactionController@createTransaction');
+Route::get('/transactions', 'TransactionController@getTransactions');
+Route::get('/getBanksList', 'TransactionController@getBankList');
 
