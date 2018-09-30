@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\GetBankList; 
+use Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        GetBankList::class
     ];
 
     /**
@@ -24,8 +26,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('placetopay:getbanklist')
+                 ->hourly()
+                 ->when(function(){
+                    $banklist = Cache::get('placetopay_banklist', array());
+
+                    if(empty($banklist)){
+                        return true;                        
+                    }
+                 });
+
     }
 
     /**
