@@ -11,8 +11,10 @@
 |
 */
 
-Route::get('/', 'TransactionController@index');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'TransactionController@index');
 Route::get('/createTransaction', 'TransactionController@createTransaction');
 Route::get('/transactions', 'TransactionController@getTransactions');
 Route::get('/getBanksList', 'TransactionController@getBankList');
+Auth::routes();
 
