@@ -25,7 +25,7 @@ trait PseTransactionStore
 
         $trans = $this->prepareRequestTransaction($data, $redirect); 
         $response = $this->makeRequest($trans);
-        $this->storeTransaction($response, $metopayId);
+        $this->storeTransaction($response, $metopayId, $data['amount']);
 
         $transResult = $response->getTransactionResult();
         if($transResult->returnCode == 'SUCCESS'){
@@ -82,9 +82,10 @@ trait PseTransactionStore
      *
      * @param createTransactionResponse $response
      * @param integer $metopayId
+     * @param float   $amount
      * @return void
      */
-    protected function storeTransaction(createTransactionResponse $response, $metopayId)
+    protected function storeTransaction(createTransactionResponse $response, $metopayId, $amount)
     {
         $transResult = $response->getTransactionResult();
         $newTransaction = new Transaction();
@@ -93,6 +94,7 @@ trait PseTransactionStore
         $newTransaction->authorization = $transResult->trazabilityCode;
         $newTransaction->state = $transResult->responseCode;
         $newTransaction->metopay_id = $metopayId;
+        $newTransaction->amount = $amount;
         $newTransaction->save();
     }
 

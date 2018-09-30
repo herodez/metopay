@@ -24,7 +24,7 @@
                             <tr>
                                 <td>{{$transaction->transaction_id}}</td>
                                 <td>{{$transaction->authorization}}</td>
-                                <td>1022 $</td>
+                                <td>{{$transaction->amount}} $</td>
                                 <td>{{$transaction->state}}</td>
                             </tr>
                         </tbody>

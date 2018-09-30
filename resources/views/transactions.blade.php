@@ -18,7 +18,9 @@
                                 <th scope="col">Transaction</th>
                                 <th scope="col">Session</th>
                                 <th scope="col">Authorization</th>
+                                <th scope="col">Amount</th>
                                 <th scope="col">State</th>
+                                <th scope="col">Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,7 +33,9 @@
                                     </th>
                                     <td>{{$transaction->session_id }}</td>
                                     <td>{{$transaction->authorization}}</td>
+                                    <td>{{$transaction->amount}} $</td>
                                     <td>{{$transaction->state}}</td>
+                                    <td>{{$transaction->created_at->toDayDateTimeString()}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
