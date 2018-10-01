@@ -64,6 +64,9 @@ class TransactionController extends Controller
         if(!empty($successUrl)){
             return redirect($successUrl);
         }
+
+        return redirect()->route('dashboard')
+                         ->with('failt-transaction', 'the transaction could not be made.');
     }
 
     /**
