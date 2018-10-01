@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        GetBankList::class
+        GetBankList::class,
+        GetResultTransactions::class
     ];
 
     /**
@@ -35,10 +36,12 @@ class Kernel extends ConsoleKernel
                     if(empty($banklist)){
                         return true;                        
                     }
-                });
+                 })
+                 ->withoutOverlapping(10);
         
         $schedule->command('placetopay:getresulttransaction')
-                 ->everyTenMinutes();
+            ->everyTenMinutes()
+            ->withoutOverlapping(30);
     }
 
     /**
