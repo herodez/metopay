@@ -44,26 +44,9 @@ class TransactionController extends Controller
      */
     public function store(StorePseTransaction $request)
     {
-        $payer = new Person(); 
-        $payer->document = '788999033';
-        $payer->documentType = 'CC';
-        $payer->firstName = 'Mario';
-        $payer->lastName = 'Gonzalez';
-        $payer->emailAddress = "mario@gmail.com";
-        
-        $buyer = new Person(); 
-        $buyer->document = '788999033';
-        $buyer->documentType = 'CC';
-        $buyer->firstName = 'Mario';
-        $buyer->lastName = 'Gonzalez';
-        $buyer->emailAddress = "mario@gmail.com";
-
-        $shipping = new Person(); 
-        $shipping->document = '788999033';
-        $shipping->documentType = 'CC';
-        $shipping->firstName = 'Mario';
-        $shipping->lastName = 'Gonzalez';
-        $shipping->emailAddress = "mario@gmail.com";
+        $payer = getPayerPerson(); 
+        $buyer = getBuyerPerson();
+        $shipping = getShippingPerson();
 
         $data = array(
             'bank' => $request->bank,
